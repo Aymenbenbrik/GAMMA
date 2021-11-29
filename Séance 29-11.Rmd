@@ -1,0 +1,152 @@
+---
+title: "Séance 29-11"
+Author : "Aymen Ben Brik"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Exercice 1 (Tekouin section Rappel sur les variables aléatoires)
+
+On suppose qu'en moyenne on enregistre "lambda" crash d'avions par an. 
+
+Soit X une variable aléatoire réelle représentant le nombre d crash d'avion par an.  
+
+Donc X suit une loi de poisson de paramètre "lbd". On vous demande de définir les variables suivantes:
+
+prob4 devra contenir la probabilité que 4 avions se crashent cette année.
+
+probauplus4 devra contenir la probabilité qu'au plus 4 avions se crachent cette année (4 inclus). 
+
+probaumoins12 devra contenir la probabilité qu'au moins 12 avions se crachent cette année (12 inclus).
+
+Le paramètre lambda sera fourni dans l'énoncé (la variable "lbd" contiendra cette valeur par défaut).
+```{r, echo=TRUE}
+lbd = 0.01
+prob4 <- dpois(x=4,lambda=lbd)
+probauplus4 <- sum(dpois(x=0:4,lambda=lbd))
+probaumoins12 <- ppois(q=12,lambda=lbd, lower.tail=F)
+```
+
+## Exercice 2 (Tekouin section Rappel sur les variables aléatoires)
+
+Soit $X$ une variable aléatoire qui suit la loi normale de moyenne $\mu$ et d’écart-type $\sigma$.
+
+Calculez $\mathbb{P}(X<20)$ et stockez le résultat dans la variable "p1"
+
+Calculez $\mathbb{P}(20 < X < 25) et stockez-le dans la variable "p2"
+
+Les variables $\mu$ et $\sigma$ seront chargées par défaut dans votre environnement.
+
+```{r Exercice 2, echo=TRUE, message=TRUE, warning=TRUE, paged.print=TRUE}
+moy = 15
+sigma = 5
+p1 <- pnorm(20,moy,sigma)
+p2 <- pnorm(25,moy,sigma)-p1
+```
+
+## Exercice 3 (Tekouin section Rappel sur les variables aléatoires)
+
+Si la loi de $X$ dépend d’une ou plusieurs variables, alors la densité de $X$ en $x$ est donnée par les commandes _dloi(x,part1,part2)_.
+
+Vous disposez des deux variables $n$ et $p$ qui sont déjà prédéfinies dans R.
+
+Calculer à l'aide de la formule mathématique la densité d’une variable $X$ qui suit la loi binomiale $B(n,p)$ en $x = 2$, et appelez la $dens1$.
+
+Calculer la même densité à l'aide de la commande $dbinom$, et appelez la **$dens2$**.
+
+Calculer la densité de X ~ B(n,p) en x = {1, 2, 3}. Vous devrez appeler ce vecteur à trois éléments "dens_vect".
+```{r Exercice 3, echo=TRUE, message=TRUE, warning=TRUE, paged.print=TRUE}
+n = 10
+p = 0.25
+dens1 <- choose(n,2)*p^2*(1-p)^(n-2)
+dens2 <- dbinom(2,n,p)
+dens_vect <- dbinom(1:3,n,p)
+```
+
+## Exercice 4 (Tekouin section Rappel sur les variables aléatoires)
+Vous aurez deux variables $\lambda$ et $n$. Vous devez:
+
+Calculer la densité de $X ~ exp(\lambda)$ en $n$ et notez la $dens$
+
+Calculer le vecteur contenant les densités de $X ~ exp(\lambda)$ en $x=n$ pour $\lambda = 1,2,...,k$ et appelez-le "dens_vect_lambda"
+
+Calculer le vecteur contenant les densité de $X ~ exp(\lambda)$ en $1,2,...,n$ et appelez-le "dens_vect_x"
+
+```{r Exercice 4, echo=TRUE, message=TRUE, warning=TRUE, paged.print=TRUE}
+lbd = 1.25
+n=3
+k=5
+dens <- dexp(n,lbd)
+dens_vect_lambda <- dexp(n,1:5)
+dens_vect_x <- dexp(1:n,lbd)
+```
+
+## Exercice 5 (Tekouin section Théorie de l'échantillonnage)
+
+Dans une usine, on utilise une machine automatique pour couper des tiges métalliques. Lorsque la machine est correctement ajustée, la longueur des tiges coupées est en moyenne de $\mu= 30$ cm avec un écart type de $\sigma= 0.5$ cm. Pour contrôler la longueur des tiges coupées, on tire dans une production d'une journée un échantillon aléatoire de $n=100$ tiges.
+
+### Question 1 :
+
+Quels sont les paramètres de la moyenne échantionnale $\bar{X}$ : 
+
+Déterminer la moyenne $\mu_{ech}$ de la loi de $\bar{X}$
+
+Déterminer la variance $\sigma_{ech}^2$ de la loi de $\bar{X}$
+
+Déterminer l'écart-type $\sigma_{ech}$ de la loi de $\bar{X}$
+
+### Question 2 :
+
+Calculer la probabilité que $\bar{X}$ soit inférieure à $29.9$ cm.
+
+
+Enregistrer le résultat dans une variable notée $p_1$.
+
+### Question 3
+
+Calculer la probabilité que la variance de l'échantillon soit supérieure à $0.3$.
+
+Enregistrer le résultat dans une variable notée $p_2$.
+
+### Question 4
+
+Calculer la probabilité que la variance de l’échantillon soit supérieure à $38.8$, en utilisant l’approximation de la loi KHI2 par une loi normale.
+
+On rappelle que :
+
+- $\mathbb{E}(\chi_2^k)=k$ et $var(\chi_2^k)=2k$  
+
+- On peut approximer une loi Khi-deux $k$ degré de liberté par une loi normale dès que $k \geq 30$ 
+
+**Les instructions** :
+
+• Définir $\mu_n$ : la moyenne de la loi normale.
+
+• Définir $\sigma_n$ : l’écart-type de la loi normale,
+
+• Définir $p_3$ : la probabilité demandée.
+
+
+```{r Exercice 5, echo=TRUE, message=TRUE, warning=TRUE, paged.print=TRUE}
+mu = 30
+sigma = 0.5
+n= 100
+mu_ech = mu
+var_ech = sigma^2/n
+ecart_ech = sigma/sqrt(n)
+
+taille_max = 29.9
+p1 = pnorm(taille_max, mean = mu_ech, sd = ecart_ech)
+
+var_min = 0.3
+q = var_min*(n-1)/sigma^2
+p2 = pchisq(q, df = n-1,lower.tail = FALSE)
+
+mu_app = n-1
+sigma_app = sqrt(2*(n-1))
+p3 = pnorm(q, mean = mu_app, sd= sigma_app,lower.tail = FALSE)
+```
+
